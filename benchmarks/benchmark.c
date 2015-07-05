@@ -68,7 +68,7 @@ void benchmark(const char* filename) {
 
             // -- flash sort
             t0 = clock();
-            flashsort(values1, n, sizeof(type));
+            flashsort(values1, n, sizeof(type), sizeof(type));
             t = clock();
             st1 += (double)(t - t0) / CLOCKS_PER_SEC;
 

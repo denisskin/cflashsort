@@ -25,18 +25,18 @@
 
 typedef unsigned char byte;
 
-#define SWAP(a, b)  swap((byte*)a, (byte*)b, width);
+#define SWAP(a, b)  swap((byte*)a, (byte*)b, size);
 #define BYTE(pValue, lv) *((byte*)(pValue)+lastLv-lv)
 
-static void swap(byte *a, byte *b, size_t width){
-    for(byte v; width--; ) {
+static void swap(byte *a, byte *b, size_t size){
+    for(byte v; size--; ) {
         v = *a;
         *a++ = *b;
         *b++ = v;
     }
 }
 
-void flashsort(void *values, size_t n, size_t width) {
+void flashsort(void *values, size_t n, size_t size, size_t size_key) {
 
     typedef struct {
         byte* pVal;
@@ -57,23 +57,23 @@ void flashsort(void *values, size_t n, size_t width) {
     Stack *pStack, *stack;
     byte c, c0, ch, ch0;
     unsigned countBuckets = 0;
-    size_t lv, lastLv = width - 1, width2=width+width;
+    size_t lv, lastLv = (size_key>0 && size_key<=size? size_key : size) - 1, size2 = size + size;
 
-    stack = pStack = malloc((width+1)*sizeof(Stack));
+    stack = pStack = malloc((size+1)*sizeof(Stack));
     stack->lv = 0;
-    stack->pn = p0 + n*width;
+    stack->pn = p0 + n*size;
 
 start:
     lv = pStack->lv;    // level
     pn = pStack->pn;    // pointer on end of array
 
-    if(pn == p0 + width) {  // only one element. rise up a level
+    if(pn == p0 + size) {  // only one element. rise up a level
         p0 = pn;
         pStack--;
         goto sub;
     }
-    if(pn == p0 + width2) {  // compare 2 element and rise up a level
-        p = p0 + width;
+    if(pn == p0 + size2) {  // compare 2 element and rise up a level
+        p = p0 + size;
         // short sort
         for( ; ; lv++) {
             c0 = BYTE(p0, lv);
@@ -93,7 +93,7 @@ start:
     countBuckets = 0;
 
     // calc buckets sizes.
-    for(p = p0; p < pn; p+=width) {
+    for(p = p0; p < pn; p+=size) {
         countBuckets += !(b = buckets + BYTE(p, lv))->len++;
         if(b < bLo) bLo = b;
         if(b > bHi) bHi = b;
@@ -109,12 +109,12 @@ start:
 //        pStack++;
 //        pStack->lv = lv+1;
 //        bLo->pVal = p0;
-//        bHi->pVal = pStack->pn = p0 + bLo->len * width;
-//        for(b = bLo; b->len; b->len--, b->pVal+=width) {
+//        bHi->pVal = pStack->pn = p0 + bLo->len * size;
+//        for(b = bLo; b->len; b->len--, b->pVal+=size) {
 //            while((bp = buckets + BYTE(b->pVal, lv)) != b) {
 //                SWAP(b->pVal, bp->pVal);
 //                bp->len--;
-//                bp->pVal+=width;
+//                bp->pVal+=size;
 //            }
 //        }
 //        bHi->len = 0;
@@ -130,34 +130,34 @@ start:
     if(lv == lastLv) { // last level
         for(b=bLo; b<=bHi; b++) {
             b->pVal = p0;
-            p0 += b->len * width;
+            p0 += b->len * size;
         }
         p0 = pn;
     } else {
         for(b = bLo; b->len < 2 && b <= bHi; b++) {
             if(b->len) {
-                b->pVal = p0; p0 += width;
+                b->pVal = p0; p0 += size;
             }
         }
         if(p0 != pn) {
             // pre-set size of first sub.bucket for next iteration
             pStack++;
-            pStack->pn = p0 + b->len * width;
+            pStack->pn = p0 + b->len * size;
             pStack->lv = lv+1;
         }
         for(p=p0; b<=bHi; b++) {
             b->pVal = p;
-            p += b->len * width;
+            p += b->len * size;
         }
     }
 
     // move values into appropriate buckets
     for(b = bLo; b < bHi; b++) {
-        for(; b->len; b->len--, b->pVal+=width) {
+        for(; b->len; b->len--, b->pVal+=size) {
             while((bp = buckets + BYTE(b->pVal, lv)) != b) {
                 SWAP(b->pVal, bp->pVal);
                 bp->len--;
-                bp->pVal+=width;
+                bp->pVal+=size;
             }
         }
     }
@@ -185,7 +185,7 @@ sub:
 
     // calculate length of current sub-bucket
     ch = BYTE(p0, lv);
-    for(p = p0 + width; p < pn; p+=width) {
+    for(p = p0 + size; p < pn; p+=size) {
         if(ch != (ch0 = BYTE(p, lv))) break;
         ch = ch0;
     }
