@@ -9,16 +9,16 @@
 void benchmark(const char* filename);
 
 int main() {
-    benchmark("data/words-en.txt");
-    benchmark("data/hashes-hex.txt");
-    benchmark("data/hashes-base64.txt");
-    benchmark("data/numbers.txt");
     benchmark("data/numbers2.txt");
     return 0;
 }
 
-static int cmpfunc(const void * a, const void * b) {
-    return strcmp(*(char**)a, *(char**)b);
+typedef int type;
+#define FMT "%d"
+#define MAX_VALUES 1000000
+
+static int cmp(const void * a, const void * b) {
+    return *(type*)a > *(type*)b? 1 : -1;
 }
 
 void benchmark(const char* filename) {
@@ -30,35 +30,22 @@ void benchmark(const char* filename) {
         printf("Error: cant not open file %s!\n", filename);
         exit(1);
     }
-    fseek(fp, 0, SEEK_END);
-    long fileLen = ftell(fp);
-    char *buf = malloc(fileLen+1), *buf0=buf;
-    if(!buf) {
-        printf("ERROR: Can`t allocate memory! (%ld bytes)\n", fileLen);
-        exit(-1);
-    }
-    fseek(fp, 0, 0);
-    while(!feof(fp)) nValues += !!fgets(buf, 100, fp);
 
-    char **values  = (char**)malloc(nValues * sizeof(char*));
-    char **values1 = (char**)malloc(nValues * sizeof(char*));
-    char **values2 = (char**)malloc(nValues * sizeof(char*));
-    if(!values) {
-        printf("ERROR: Can`t allocate memory! (%ld bytes)\n", i * sizeof(char*));
+    type*values  = (type*)malloc(MAX_VALUES * sizeof(type));
+    type*values1 = (type*)malloc(MAX_VALUES * sizeof(type));
+    type*values2 = (type*)malloc(MAX_VALUES * sizeof(type));
+    if(!values || !values1 || !values2) {
+        printf("ERROR: Can`t allocate memory!\n");
         exit(1);
     }
-    fseek(fp, 0, 0);
-    for(i = 0; !feof(fp); i++) {
-        values[i] = fgets(buf, 100, fp);
-        int len = strlen(buf);
-        buf[len-1] = 0;
-        buf += len;
+    for(nValues = 0; nValues<MAX_VALUES && !feof(fp); nValues++) {
+        fscanf(fp, FMT, values+nValues);
     }
 
     printf("\n\n------------ %s -------------", filename);
     printf("\n total count values: %d", nValues);
     printf("\n top-10 values: ");
-    for(i=0; i<10; i++) printf(" %s,", values[i]);
+    for(i=0; i<10; i++) printf(" "FMT",", values[i]);
     printf("... \n");
     printf("\n-------------------------------------------------------------------------------------------------------");
     printf("\nCount\t\tFlash-sort\t\t          \tQuick-sort");
@@ -81,13 +68,13 @@ void benchmark(const char* filename) {
 
             // -- flash sort
             t0 = clock();
-            flashsort_str(values1, n);
+            flashsort(values1, n, sizeof(type));
             t = clock();
             st1 += (double)(t - t0) / CLOCKS_PER_SEC;
 
             // -- quick sort
             t0 = clock();
-            qsort(values2, n, sizeof(char*), cmpfunc);
+            qsort(values2, n, sizeof(type), cmp);
             t = clock();
             st2 += (double)(t - t0) / CLOCKS_PER_SEC;
         }
@@ -97,20 +84,18 @@ void benchmark(const char* filename) {
         printf("\t%+-6.2lf%%", (st2/st1-1)*100);    // difference in %
 
         for(i = 0; i < n; i++) {
-            if(strcmp(values1[i], values2[i])) {
-                printf("\nNOT EQUAL %d (%s != %s)\n", i, values1[i], values2[i]);
-                for(int j=i-5; j<i+5; j++) printf(" %s \t%s \n", values1[j], values2[j]);
+            if(values1[i] != values2[i]) {
+                printf("\nNOT EQUAL %d ("FMT" != "FMT")\n", i, values1[i], values2[i]);
                 exit(1);
             }
         }
     }
     printf("\n\n top-10 sorted data: ");
-    for(i=0; i<10; i++) printf(" %s,", values1[i]);
+    for(i=0; i<10; i++) printf(" "FMT",", values1[i]);
     printf("... \n");
 
     printf("\n\n");
 
-    free(buf0);
     free(values);
     free(values1);
     free(values2);

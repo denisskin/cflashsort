@@ -21,5 +21,7 @@
 //    SOFTWARE.
 //
 
-void flashsort_str(char **values, size_t n);
+void flashsort(void *values, size_t num, size_t width);
+
+void flashsort_str(char **values, size_t num);
 

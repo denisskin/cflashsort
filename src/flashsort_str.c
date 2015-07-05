@@ -25,14 +25,15 @@
 
 #define STACK_SIZE 1000
 
-#define BYTE(value, lv) (*((char*)(value)+lv)? ((char*)(value)+lv) : 0)
+typedef char* type;
+typedef unsigned char byte;
+
+#define BYTE(value, lv) (*((byte*)(value)+lv)? ((byte*)(value)+lv) : 0)
 
 #define SWAP(a, b)  v=b,b=a,a=v
 
-void flashsort_str(char **values, size_t n) {
 
-    typedef char* type;
-    typedef char byte;
+void flashsort_str(type *values, size_t n) {
 
     typedef struct {
         type* pVal;
@@ -52,7 +53,8 @@ void flashsort_str(char **values, size_t n) {
     Stack stack[STACK_SIZE] = {{0, values+n}}, *pStack = stack;
     type v, *p0 = values, *pn, *p;
     byte *c, *c0, ch, ch0;
-    unsigned lv, countBuckets;
+    size_t lv;
+    byte countBuckets;
 
 start:
     lv = pStack->lv;    // level
@@ -111,24 +113,25 @@ start:
         goto start;
     }
 
-    if(countBuckets == 2) {
-        pStack++;
-        pStack->lv = lv+1;
-        bLo->pVal = p0;
-        bHi->pVal = pStack->pn = p0 + bLo->len;
-        for(b = bLo; b->len; b->len--, b->pVal++) {
-            while((bp = buckets + *BYTE(*b->pVal, lv)) != b) {
-                SWAP(*b->pVal, *bp->pVal);
-                bp->len--;
-                bp->pVal++;
-            }
-        }
-        bHi->len = 0;
-        goto start;
-    }
+//    if(countBuckets == 2) {
+//        pStack++;
+//        pStack->lv = lv+1;
+//        bLo->pVal = p0;
+//        bHi->pVal = pStack->pn = p0 + bLo->len;
+//        for(b = bLo; b->len; b->len--, b->pVal++) {
+//            while((bp = buckets + *BYTE(*b->pVal, lv)) != b) {
+//                SWAP(*b->pVal, *bp->pVal);
+//                bp->len--;
+//                bp->pVal++;
+//            }
+//        }
+//        bHi->len = 0;
+//        goto start;
+//    }
 
     // set scopes of buckets (pointers to value)
-    // move p0 for
+
+    // escape null values
     for(b=bLo; b->len < 2 && b <= bHi; b++) {
         if(b->len) b->pVal = p0++;
     }
@@ -183,11 +186,10 @@ sub:
     }
 
     pStack++;
-    // todo: check stack size
-//    if(pStack > stack + STACK_SIZE) {
-//        printf("\n\n STACK OVERFLOW \n");
-//        return;
-//    }
+    if(pStack > stack + STACK_SIZE) {
+        // todo: try to allocate memory for new stack  or fatal
+        return;
+    }
     pStack->lv = lv+1;
     pStack->pn = p;
     goto start;
