@@ -7,8 +7,30 @@ The algorithm has a run time close to linear and uses O(1) memory.
 Example
 -------
 ``` c
-    int values[10] = {9, 6, 7, 0, 3, 1, 3, 2, 5, 8};
-    flashsort((void*)values, 10, sizeof(int), sizeof(int));
+int values[10] = {9, 6, 7, 0, 3, 1, 3, 2, 5, 8};
+flashsort(values, 10, sizeof(int), sizeof(int));
+```
+
+``` c
+typedef struct {
+    int  key;
+    char *value;
+} KeyValue;
+
+KeyValue names[10] = {
+    {8, "Hunter"},
+    {9, "Isaac"},
+    {3, "Christopher"},
+    {2, "Bob"},
+    {6, "Faith"},
+    {1, "Alice"},
+    {7, "Gabriel"},
+    {4, "Denis"},
+    {0, "none"},
+    {5, "Ethan"},
+};
+
+flashsort(names, 10, sizeof(KeyValue), sizeof(int));
 ```
 
 Benchmarks
