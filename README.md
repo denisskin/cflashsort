@@ -7,11 +7,15 @@ The algorithm has a run time close to linear and uses O(1) memory.
 Example
 -------
 ``` c
-int values[10] = {9, 6, 7, 0, 3, 1, 3, 2, 5, 8};
-flashsort(values, 10, sizeof(int), sizeof(int));
+// sort integer values
+
+int nums[10] = {9, 6, 7, 0, 3, 1, 3, 2, 5, 8};
+flashsort(nums, 10, sizeof(int), sizeof(int));
 ```
 
 ``` c
+// sort key-value array
+
 typedef struct {
     int  key;
     char *value;
@@ -30,7 +34,7 @@ KeyValue names[10] = {
     {5, "Ethan"},
 };
 
-flashsort(names, 10, sizeof(KeyValue), sizeof(int));
+flashsort(names, 10, sizeof(KeyValue), sizeof(names->key));
 ```
 
 Benchmarks
