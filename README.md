@@ -7,8 +7,8 @@ The algorithm has a run time close to linear and uses O(1) memory.
 Example
 -------
 ``` c
-int values[10] = [9, 6, 7, 0, 3];
-flashsort(values, 10, sizeof(int), sizeof(int));
+    int values[10] = {9, 6, 7, 0, 3, 1, 3, 2, 5, 8};
+    flashsort((void*)values, 10, sizeof(int), sizeof(int));
 ```
 
 Benchmarks
