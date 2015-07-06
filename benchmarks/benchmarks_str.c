@@ -60,8 +60,8 @@ void benchmark(const char* filename) {
     for(i=0; i<10; i++) printf(" %s,", values[i]);
     printf("... \n");
     printf("\n-------------------------------------------------------------------------------------------------------");
-    printf("\nCount\t\tFlash-sort\t\t          \tQuick-sort");
-    printf("\nelements\ttotal time\tone operation\t\ttotal time\tone operation");
+    printf("\nCount\t\tFlash-sort\t\t\tQuick-sort");
+    printf("\nelements\ttotal time\tone operation\ttotal time\tone operation");
     printf("\n-------------------------------------------------------------------------------------------------------");
 
     const int STEPS = 20;   // count of points
@@ -91,8 +91,8 @@ void benchmark(const char* filename) {
             st2 += (double)(t - t0) / CLOCKS_PER_SEC;
         }
         // print avg time
-        printf("\t%lf sec\t[%lf mcsec]", st1/K, st1/K/n*10e6);
-        printf("\t%lf sec\t[%lf mcsec]", st2/K, st2/K/n*10e6);
+        printf("\t%lf sec\t[%.3lf mcsec]", st1/K, st1/K/n*10e6);
+        printf("\t%lf sec\t[%.3lf mcsec]", st2/K, st2/K/n*10e6);
         printf("\t%+-6.2lf%%", (st2/st1-1)*100);    // difference in %
 
         for(i = 0; i < n; i++) {
