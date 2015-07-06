@@ -173,8 +173,9 @@ start:
 
 sub:
     // continue processing sub buckets
+    if(pStack < stack)
+        goto finish;
 
-    if(pStack < stack) return; // finish sort
     lv = pStack->lv;
     pn = pStack->pn;
 
@@ -194,6 +195,10 @@ sub:
     pStack->lv = lv+1;
     pStack->pn = p;
     goto start;
+
+finish:
+    free(stack);
+    return;
 }
 
 

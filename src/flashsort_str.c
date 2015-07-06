@@ -20,18 +20,15 @@
 //    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //    SOFTWARE.
 //
-#include <stdio.h>
 #include <string.h>
 
-#define STACK_SIZE 1000
+#define STACK_SIZE 100
 
 typedef char* type;
 typedef unsigned char byte;
 
 #define BYTE(value, lv) (*((byte*)(value)+lv)? ((byte*)(value)+lv) : 0)
-
 #define SWAP(a, b)  v=b,b=a,a=v
-
 
 void flashsort_str(type *values, size_t n) {
 
@@ -85,7 +82,7 @@ start:
     bLo = bMax;
     countBuckets = 0;
 
-    // move pointer to no null value
+    // skip NULL values
     while(p0 < pn && !BYTE(*p0, lv)) p0++;
 
     // calc buckets sizes.
@@ -96,7 +93,7 @@ start:
             if(b < bLo) bLo = b;
             if(b > bHi) bHi = b;
         } else {
-            // move NULL-byte value to begin.  p0++
+            // move NULL value to the beginning.  p0++
             SWAP(*p, *p0);
             p0++;
         }
@@ -131,7 +128,7 @@ start:
 
     // set scopes of buckets (pointers to value)
 
-    // escape null values
+    // skip NULL values and values with length = 1
     for(b=bLo; b->len < 2 && b <= bHi; b++) {
         if(b->len) b->pVal = p0++;
     }
