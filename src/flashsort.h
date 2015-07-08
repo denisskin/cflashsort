@@ -21,7 +21,9 @@
 //    SOFTWARE.
 //
 
-void flashsort(void *values, size_t num, size_t size_data, size_t size_key);
+// sort array of pointers
+void flashsort(void **values, size_t num, const char* get_byte(const void* value, unsigned int num_byte));
 
-void flashsort_str(char **values, size_t num);
+// sort array of values with constant length
+void flashsort_const(void *values, size_t num, size_t size_value, size_t size_key);
 

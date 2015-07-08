@@ -33,6 +33,41 @@ KeyValue names[10] = {
 };
 
 flashsort(names, 10, sizeof(KeyValue), sizeof(names->key));
+
+
+// sort array of strings
+char *names[10] = {
+    "Hunter",
+    "Isaac",
+    "Christopher",
+    "Bob",
+    "Faith",
+    "Alice",
+    "Gabriel",
+    "Denis",
+    "****",
+    "Ethan",
+};
+
+static const char* get_char(const void *value, unsigned pos) {
+    return *((char*)value + pos)? (char*)value + pos : NULL;
+}
+
+flashsort((void**)names, 10, get_char);
+
+for(int i=0; i<10; i++) printf("\n\t%s", names[i]);
+
+/* out:
+    Alice
+    Bob
+    Christopher
+    Denis
+    Ethan
+    Faith
+    Gabriel
+    Hunter
+    Isaac
+*/
 ```
 
 Benchmarks
@@ -42,37 +77,33 @@ Benchmarks of sorting of strings.
 run
 ``` shell
 cd benchmarks
-gcc ../src/*.c benchmarks_str.c  -o benchmarks.o && ./benchmarks.o
-```
-output
-``` txt
---------------------------------------------------------------------------------------------
-Count		Flash-sort		          	     Quick-sort
-elements	total time	   one operation    total time	 one operation
---------------------------------------------------------------------------------------------
-    147		0.000087 sec	[5.913 mcsec]	0.000061 sec	[4.160 mcsec]	-29.64%
-    274		0.000173 sec	[6.305 mcsec]	0.000139 sec	[5.059 mcsec]	-19.76%
-    512		0.000292 sec	[5.705 mcsec]	0.000335 sec	[6.565 mcsec]	+14.64%
-    955		0.000447 sec	[4.682 mcsec]	0.000636 sec	[6.694 mcsec]	+42.18%
-   1782		0.000784 sec	[4.399 mcsec]	0.001295 sec	[7.264 mcsec]	+65.20%
-   3326		0.001627 sec	[4.890 mcsec]	0.002682 sec	[8.043 mcsec]	+64.91%
-   6208		0.003859 sec	[6.215 mcsec]	0.005791 sec	[9.379 mcsec]	+50.08%
-  11585		0.008717 sec	[7.524 mcsec]	0.011480 sec	[9.982 mcsec]	+31.71%
-  21618		0.017069 sec	[7.895 mcsec]	0.022877 sec	[10.593 mcsec]	+34.02%
-  40342		0.028611 sec	[7.092 mcsec]	0.046428 sec	[11.508 mcsec]	+62.27%
-  75281		0.048849 sec	[6.488 mcsec]	0.090109 sec	[11.920 mcsec]	+84.46%
- 140479		0.096301 sec	[6.855 mcsec]	0.196975 sec	[14.069 mcsec]	+104.54%
-```
-
-Benchmarks of sorting of values constant length.
-
-run
-``` shell
-cd benchmarks
 gcc ../src/*.c benchmarks.c  -o benchmarks.o && ./benchmarks.o
 ```
 output
 ``` txt
+
+Benchmarks sorting of strings
+ 
+--------------------------------------------------------------------------------------------
+Count		Flash-sort		          	     Quick-sort
+elements	total time	   one operation    total time	 one operation
+--------------------------------------------------------------------------------------------
+    147		0.000019 sec	[1.274 mcsec]	0.000010 sec	[0.710 mcsec]	-44.31%
+    274		0.000038 sec	[1.393 mcsec]	0.000029 sec	[1.062 mcsec]	-23.76%
+    512		0.000065 sec	[1.265 mcsec]	0.000058 sec	[1.141 mcsec]	-9.78 %
+    955		0.000115 sec	[1.204 mcsec]	0.000142 sec	[1.492 mcsec]	+23.92%
+   1782		0.000207 sec	[1.163 mcsec]	0.000303 sec	[1.702 mcsec]	+46.34%
+   3326		0.000460 sec	[1.382 mcsec]	0.000671 sec	[2.017 mcsec]	+45.96%
+   6208		0.001006 sec	[1.621 mcsec]	0.001316 sec	[2.121 mcsec]	+30.84%
+  11585		0.002228 sec	[1.923 mcsec]	0.002676 sec	[2.310 mcsec]	+20.12%
+  21618		0.004302 sec	[1.990 mcsec]	0.005269 sec	[2.437 mcsec]	+22.49%
+  40342		0.007548 sec	[1.871 mcsec]	0.011148 sec	[2.763 mcsec]	+47.69%
+  75281		0.013887 sec	[1.845 mcsec]	0.022099 sec	[2.936 mcsec]	+59.13%
+ 140479		0.027967 sec	[1.991 mcsec]	0.046108 sec	[3.282 mcsec]	+64.87% 
+
+
+Benchmarks sorting of integers
+
 -------------------------------------------------------------------------------------------
 Count		Flash-sort		          	    Quick-sort
 elements	total time	   one operation	total time	 one operation
