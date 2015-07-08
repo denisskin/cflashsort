@@ -7,9 +7,33 @@ The algorithm has a run time close to linear and uses O(1) memory.
 Example
 -------
 ``` c
+// sort array of strings
+char *names[10] = {
+    "Hunter",
+    "Isaac",
+    "Christopher",
+    "Bob",
+    "Faith",
+    "Alice",
+    "Gabriel",
+    "Denis",
+    "****",
+    "Ethan",
+};
+
+static const char* get_char(const void *value, unsigned pos) {
+    return *((char*)value + pos)? (char*)value + pos : NULL;
+}
+
+flashsort((void**)names, 10, get_char);
+
+```
+
+``` c
 // sort integer values
 int nums[10] = {9, 6, 7, 0, 3, 1, 3, 2, 5, 8};
-flashsort(nums, 10, sizeof(int), sizeof(int));
+flashsort_const(nums, 10, sizeof(int), sizeof(int));
+
 ```
 
 ``` c
@@ -32,42 +56,8 @@ KeyValue names[10] = {
     {5, "Ethan"},
 };
 
-flashsort(names, 10, sizeof(KeyValue), sizeof(names->key));
+flashsort_const(names, 10, sizeof(KeyValue), sizeof(names->key));
 
-
-// sort array of strings
-char *names[10] = {
-    "Hunter",
-    "Isaac",
-    "Christopher",
-    "Bob",
-    "Faith",
-    "Alice",
-    "Gabriel",
-    "Denis",
-    "****",
-    "Ethan",
-};
-
-static const char* get_char(const void *value, unsigned pos) {
-    return *((char*)value + pos)? (char*)value + pos : NULL;
-}
-
-flashsort((void**)names, 10, get_char);
-
-for(int i=0; i<10; i++) printf("\n\t%s", names[i]);
-
-/* out:
-    Alice
-    Bob
-    Christopher
-    Denis
-    Ethan
-    Faith
-    Gabriel
-    Hunter
-    Isaac
-*/
 ```
 
 Benchmarks
