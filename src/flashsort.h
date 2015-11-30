@@ -22,7 +22,7 @@
 //
 
 // sort array of pointers
-void flashsort(void **values, size_t num, const char* get_byte(const void* value, unsigned int num_byte));
+void flashsort(void **values, size_t num, const unsigned char* get_byte(const void* value, unsigned int num_byte));
 
 // sort array of values with constant length
 void flashsort_const(void *values, size_t num, size_t size_value, size_t size_key);

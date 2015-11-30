@@ -6,35 +6,45 @@
 
 #include "../src/flashsort.h"
 
-void benchmark_sort_int(const char* filename);
-void benchmark_sort_str(const char* filename);
+#define MAX_VALUES          1000000
+#define COUNT_STEPS         20   // count of points
+#define COUNT_EXPERIMENTS   40   // count of experiments on one point
+
+void benchmark_sort_str(const char* title, const char* filename);
+void benchmark_sort_int(const char* title, const char* filename);
+
+// define function flashsort_int by macro
+#define FLASH_SORT_NAME  flashsort_int
+#define FLASH_SORT_TYPE  int
+#include "../src/flashsort_macro.h"
+
 
 int main() {
-    benchmark_sort_str("data/hashes-base64.txt");
-    benchmark_sort_str("data/hashes-hex.txt");
-    benchmark_sort_str("data/numbers.txt");
-    benchmark_sort_str("data/words-en.txt");
-    
-    benchmark_sort_int("data/numbers2.txt");
+
+    benchmark_sort_str("Sorting of hashes base64",      "data/hashes-base64.txt");
+    benchmark_sort_str("Sorting of hashes hex",         "data/hashes-hex.txt");
+    benchmark_sort_str("Sorting of num-strings",        "data/numbers.txt");
+    benchmark_sort_str("Sorting of english words",      "data/words-en.txt");
+
+    benchmark_sort_int("Sorting of int-numbers",        "data/numbers2.txt");
+
     return 0;
 }
 
-#define MAX_VALUES 1000000
-
-static int cmp_int(const void * a, const void * b) {
+static __inline int cmp_int(const void * a, const void * b) {
     return *(int*)a > *(int*)b? 1 : -1;
 }
 
-static int cmp_str(const void * a, const void * b) {
+static __inline int cmp_str(const void * a, const void * b) {
     return strcmp(*(char**)a, *(char**)b);
 }
 
-static const char* get_char(const void *value, unsigned pos) {
-    return *((char*)value + pos)? (char*)value + pos : NULL;
+static __inline const unsigned char* get_char(const void *value, unsigned pos) {
+    return *((unsigned char*)value + pos)? (unsigned char*)value + pos : NULL;
 }
 
 //------------ sort strings -----------------
-void benchmark_sort_str(const char* filename) {
+void benchmark_sort_str(const char* title, const char* filename) {
 
     //------- read file ---------------
     int i, nValues = 0;
@@ -68,7 +78,7 @@ void benchmark_sort_str(const char* filename) {
         buf += len;
     }
 
-    printf("\n\n---------- benchmark sort strings %s -------------", filename);
+    printf("\n\n---------- benchmark %s\t%s -------------", title, filename);
     printf("\n total count values: %d", nValues);
     printf("\n top-10 values: ");
     for(i=0; i<10; i++) printf(" %s,", values[i]);
@@ -78,17 +88,14 @@ void benchmark_sort_str(const char* filename) {
     printf("\nelements\ttotal time\tone operation\ttotal time\tone operation");
     printf("\n-------------------------------------------------------------------------------------------------------");
 
-    const int STEPS = 20;   // count of points
-    const int K     = 30;   // count of experiments on one point
-
-    for(int step=1; step<=STEPS; step++) {
-        int n = (int)pow(nValues, 1. * step / STEPS);
+    for(int step=1; step<=COUNT_STEPS; step++) {
+        int n = (int)pow(nValues, 1. * step / COUNT_STEPS);
 
         clock_t t0, t;
         double st1=0, st2=0;
 
         printf("\n%7d\t", n);
-        for(int k=0; k < K; k++) { // count experiments
+        for(int k=0; k < COUNT_EXPERIMENTS; k++) { // count experiments
             // init data
             for(i = 0; i < n; i++) values2[i] = values1[i] = values[i];
 
@@ -105,8 +112,8 @@ void benchmark_sort_str(const char* filename) {
             st2 += (double)(t - t0) / CLOCKS_PER_SEC;
         }
         // print avg time
-        printf("\t%lf sec\t[%.3lf mcsec]", st1/K, st1/K/n*10e6);
-        printf("\t%lf sec\t[%.3lf mcsec]", st2/K, st2/K/n*10e6);
+        printf("\t%lf sec\t[%.3lf mcsec]", st1/COUNT_EXPERIMENTS, st1/COUNT_EXPERIMENTS/n*10e6);
+        printf("\t%lf sec\t[%.3lf mcsec]", st2/COUNT_EXPERIMENTS, st2/COUNT_EXPERIMENTS/n*10e6);
         printf("\t%+-6.2lf%%", (st2/st1-1)*100);    // difference in %
 
         for(i = 0; i < n; i++) {
@@ -129,7 +136,7 @@ void benchmark_sort_str(const char* filename) {
 }
 
 //------------ sort integers -----------------
-void benchmark_sort_int(const char* filename) {
+void benchmark_sort_int(const char* title, const char* filename) {
 
     //------- read file ---------------
     int i, nValues = 0;
@@ -150,7 +157,7 @@ void benchmark_sort_int(const char* filename) {
         fscanf(fp, "%d", values+nValues);
     }
 
-    printf("\n\n---------- benchmark sort integers %s -------------", filename);
+    printf("\n\n---------- benchmark %s %s -------------", title, filename);
     printf("\n total count values: %d", nValues);
     printf("\n top-10 values: ");
     for(i=0; i<10; i++) printf(" %d,", values[i]);
@@ -160,23 +167,21 @@ void benchmark_sort_int(const char* filename) {
     printf("\nelements\ttotal time\tone operation\ttotal time\tone operation");
     printf("\n-------------------------------------------------------------------------------------------------------");
 
-    const int STEPS = 20;   // count of points
-    const int K     = 30;   // count of experiments on one point
-
-    for(int step=1; step<=STEPS; step++) {
-        int n = (int)pow(nValues, 1. * step / STEPS);
+    for(int step=1; step<=COUNT_STEPS; step++) {
+        int n = (int)pow(nValues, 1. * step / COUNT_STEPS);
 
         clock_t t0, t;
         double st1=0, st2=0;
 
         printf("\n%7d\t", n);
-        for(int k=0; k < K; k++) { // count experiments
+        for(int k=0; k < COUNT_EXPERIMENTS; k++) { // count experiments
             // init data
             for(i = 0; i < n; i++) values2[i] = values1[i] = values[i];
 
             // -- flash sort
             t0 = clock();
-            flashsort_const(values1, n, sizeof(int), sizeof(int));
+            flashsort_int(values1, n);
+            //flashsort_const(values1, n, sizeof(int), sizeof(int));
             t = clock();
             st1 += (double)(t - t0) / CLOCKS_PER_SEC;
 
@@ -187,8 +192,8 @@ void benchmark_sort_int(const char* filename) {
             st2 += (double)(t - t0) / CLOCKS_PER_SEC;
         }
         // print avg time
-        printf("\t%lf sec\t[%.3lf mcsec]", st1/K, st1/K/n*10e6);
-        printf("\t%lf sec\t[%.3lf mcsec]", st2/K, st2/K/n*10e6);
+        printf("\t%lf sec\t[%.3lf mcsec]", st1/COUNT_EXPERIMENTS, st1/COUNT_EXPERIMENTS/n*10e6);
+        printf("\t%lf sec\t[%.3lf mcsec]", st2/COUNT_EXPERIMENTS, st2/COUNT_EXPERIMENTS/n*10e6);
         printf("\t%+-6.2lf%%", (st2/st1-1)*100);    // difference in %
 
         for(i = 0; i < n; i++) {
