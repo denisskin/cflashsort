@@ -66,7 +66,6 @@ void FLASH_SORT_NAME(FLASH_SORT_TYPE *values, size_t n) {
     FLASH_SORT_TYPE *pn;
     FLASH_SORT_TYPE *p;
     unsigned char c, c0, ch, ch0;
-    unsigned countBuckets = 0;
     Stack stack[FLASH_SORT_STACK_SIZE] = {{0, p0 + n}}, *pStack = stack;
     size_t lv;
     const size_t lastLv = FLASH_SORT_KEY_SIZE - 1;
@@ -104,16 +103,17 @@ start:
 
     bHi = 0;
     bLo = bMax;
-    countBuckets = 0;
+    //unsigned countBuckets = 0;
 
     // calc buckets sizes.
     for(p = p0; p < pn; p++) {
-        countBuckets += !(b = buckets + FLASH_SORT_GET_BYTE(p, lv))->len++;
+        //countBuckets += !(b = buckets + FLASH_SORT_GET_BYTE(p, lv))->len++;
+        (b = buckets + FLASH_SORT_GET_BYTE(p, lv))->len++;
         if(b < bLo) bLo = b;
         if(b > bHi) bHi = b;
     }
 
-    if(countBuckets == 1) {
+    if(bLo == bHi) {  // if countBuckets == 1
         bLo->len = 0;
         pStack->lv++;
         goto start;

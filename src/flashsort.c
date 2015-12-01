@@ -47,7 +47,7 @@ void flashsort(void **values, size_t n, const char* get_byte(const void*, unsign
     memset(buckets, 0, 256 * sizeof(Bucket));
 
     pointer v, *p0 = values, *pn, *p;
-    byte ch, ch0, countBuckets;
+    byte ch, ch0;
     const byte *c, *c0;
     size_t lv;
     Stack stack[STACK_SIZE] = {{0, p0 + n}}, *pStack = stack;
@@ -78,7 +78,7 @@ start:
 
     bHi = 0;
     bLo = bMax;
-    countBuckets = 0;
+    //unsigned countBuckets = 0;
 
     // skip NULL values
     while(p0 < pn && !BYTE(p0, lv)) p0++;
@@ -87,7 +87,8 @@ start:
     for(p = p0; p < pn; p++) {
         c = BYTE(p, lv);
         if(c) {
-            countBuckets += !(b = buckets + *c)->len++;
+            //countBuckets += !(b = buckets + *c)->len++;
+            (b = buckets + *c)->len++;
             if(b < bLo) bLo = b;
             if(b > bHi) bHi = b;
         } else {
@@ -97,12 +98,12 @@ start:
         }
     }
 
-    if(countBuckets == 0) {
+    if(!bHi) { // if countBuckets == 0
         pStack--;
         goto sub;
     }
 
-    if(countBuckets == 1) {
+    if(bLo == bHi) { // if countBuckets == 1
         bLo->len = 0;
         pStack->lv++;
         goto start;

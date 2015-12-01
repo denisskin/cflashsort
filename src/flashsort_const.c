@@ -56,7 +56,6 @@ void flashsort_const(void *values, size_t n, size_t size, size_t size_key) {
     byte *p0 = (byte*)values, *pn, *p;
     Stack *pStack, *stack;
     byte c, c0, ch, ch0;
-    unsigned countBuckets = 0;
     size_t lv, lastLv = (size_key>0 && size_key<=size? size_key : size) - 1, size2 = size + size;
 
     stack = pStack = malloc((size+1)*sizeof(Stack));
@@ -96,16 +95,17 @@ start:
 
     bHi = 0;
     bLo = bMax;
-    countBuckets = 0;
+    //unsigned countBuckets = 0;
 
     // calc buckets sizes.
     for(p = p0; p < pn; p+=size) {
-        countBuckets += !(b = buckets + BYTE(p, lv))->len++;
+        //countBuckets += !(b = buckets + BYTE(p, lv))->len++;
+        (b = buckets + BYTE(p, lv))->len++;
         if(b < bLo) bLo = b;
         if(b > bHi) bHi = b;
     }
 
-    if(countBuckets == 1) {
+    if(bLo == bHi) { // if countBuckets == 1
         bLo->len = 0;
         pStack->lv++;
         goto start;
