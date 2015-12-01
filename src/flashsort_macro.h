@@ -88,7 +88,7 @@ start:
     if(pn == p0 + 2) {  // compare 2 element and rise up a level
         p = p0 + 1;
         // short sort
-        for( ; ; lv++) {
+        for( ; lv <= lastLv; lv++) {
             c0 = FLASH_SORT_GET_BYTE(p0, lv);
             c = FLASH_SORT_GET_BYTE(p, lv);
             if(c != c0) {

@@ -80,7 +80,7 @@ start:
     if(pn == p0 + size2) {  // compare 2 element and rise up a level
         p = p0 + size;
         // short sort
-        for( ; ; lv++) {
+        for( ; lv <= lastLv; lv++) {
             c0 = BYTE(p0, lv);
             c = BYTE(p, lv);
             if(c != c0) {
