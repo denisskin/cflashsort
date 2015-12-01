@@ -78,18 +78,18 @@ Benchmarks sorting of strings
 Count		Flash-sort		          	     Quick-sort
 elements	total time	   one operation    total time	 one operation
 --------------------------------------------------------------------------------------------
-    147		0.000019 sec	[1.274 mcsec]	0.000010 sec	[0.710 mcsec]	-44.31%
-    274		0.000038 sec	[1.393 mcsec]	0.000029 sec	[1.062 mcsec]	-23.76%
-    512		0.000065 sec	[1.265 mcsec]	0.000058 sec	[1.141 mcsec]	-9.78 %
-    955		0.000115 sec	[1.204 mcsec]	0.000142 sec	[1.492 mcsec]	+23.92%
-   1782		0.000207 sec	[1.163 mcsec]	0.000303 sec	[1.702 mcsec]	+46.34%
-   3326		0.000460 sec	[1.382 mcsec]	0.000671 sec	[2.017 mcsec]	+45.96%
-   6208		0.001006 sec	[1.621 mcsec]	0.001316 sec	[2.121 mcsec]	+30.84%
-  11585		0.002228 sec	[1.923 mcsec]	0.002676 sec	[2.310 mcsec]	+20.12%
-  21618		0.004302 sec	[1.990 mcsec]	0.005269 sec	[2.437 mcsec]	+22.49%
-  40342		0.007548 sec	[1.871 mcsec]	0.011148 sec	[2.763 mcsec]	+47.69%
-  75281		0.013887 sec	[1.845 mcsec]	0.022099 sec	[2.936 mcsec]	+59.13%
- 140479		0.027967 sec	[1.991 mcsec]	0.046108 sec	[3.282 mcsec]	+64.87% 
+    147		0.000011 sec	[0.726 mcsec]	0.000009 sec	[0.628 mcsec]	-13.58%
+    274		0.000025 sec	[0.921 mcsec]	0.000025 sec	[0.923 mcsec]	+0.30 %
+    512		0.000065 sec	[1.272 mcsec]	0.000067 sec	[1.317 mcsec]	+3.53 %
+    955		0.000114 sec	[1.197 mcsec]	0.000144 sec	[1.503 mcsec]	+25.64%
+   1782		0.000207 sec	[1.160 mcsec]	0.000326 sec	[1.831 mcsec]	+57.83%
+   3326		0.000371 sec	[1.116 mcsec]	0.000618 sec	[1.859 mcsec]	+66.67%
+   6208		0.000779 sec	[1.255 mcsec]	0.001446 sec	[2.329 mcsec]	+85.58%
+  11585		0.001705 sec	[1.472 mcsec]	0.002720 sec	[2.348 mcsec]	+59.52%
+  21618		0.003395 sec	[1.571 mcsec]	0.005210 sec	[2.410 mcsec]	+53.43%
+  40342		0.007023 sec	[1.741 mcsec]	0.010266 sec	[2.545 mcsec]	+46.17%
+  75281		0.012347 sec	[1.640 mcsec]	0.020921 sec	[2.779 mcsec]	+69.44%
+ 140479		0.025313 sec	[1.802 mcsec]	0.045267 sec	[3.222 mcsec]	+78.83%
 
 
 Benchmarks sorting of integers
@@ -98,14 +98,18 @@ Benchmarks sorting of integers
 Count		Flash-sort		          	    Quick-sort
 elements	total time	   one operation	total time	 one operation
 -------------------------------------------------------------------------------------------
-   1398		0.000223 sec	[1.594 mcsec]	0.000155 sec	[1.112 mcsec]	-30.24%
-   2702		0.000608 sec	[2.250 mcsec]	0.000409 sec	[1.512 mcsec]	-32.78%
-   5220		0.001338 sec	[2.563 mcsec]	0.000807 sec	[1.545 mcsec]	-39.71%
-  10085		0.002714 sec	[2.691 mcsec]	0.001666 sec	[1.651 mcsec]	-38.62%
-  19483		0.004321 sec	[2.217 mcsec]	0.003061 sec	[1.571 mcsec]	-29.15%
-  37640		0.006318 sec	[1.678 mcsec]	0.005989 sec	[1.591 mcsec]	-5.20 %
-  72716		0.010920 sec	[1.501 mcsec]	0.012454 sec	[1.712 mcsec]	+14.04%
- 140479		0.019924 sec	[1.418 mcsec]	0.025116 sec	[1.787 mcsec]	+26.06%
- 271388		0.039561 sec	[1.457 mcsec]	0.052155 sec	[1.921 mcsec]	+28.84%
- 524288		0.087256 sec	[1.664 mcsec]	0.105510 sec	[2.012 mcsec]	+31.92%
+    100		0.000013 sec	[1.318 mcsec]	0.000004 sec	[0.440 mcsec]	-66.60%
+    194		0.000016 sec	[0.839 mcsec]	0.000009 sec	[0.460 mcsec]	-45.16%
+    374		0.000026 sec	[0.701 mcsec]	0.000027 sec	[0.713 mcsec]	+1.62 %
+    724		0.000046 sec	[0.636 mcsec]	0.000065 sec	[0.904 mcsec]	+42.21%
+   1398		0.000094 sec	[0.674 mcsec]	0.000149 sec	[1.065 mcsec]	+58.08%
+   2702		0.000232 sec	[0.859 mcsec]	0.000361 sec	[1.335 mcsec]	+55.38%
+   5220		0.000423 sec	[0.810 mcsec]	0.000664 sec	[1.271 mcsec]	+57.02%
+  10085		0.000922 sec	[0.914 mcsec]	0.001420 sec	[1.408 mcsec]	+54.05%
+  19483		0.002306 sec	[1.183 mcsec]	0.002970 sec	[1.524 mcsec]	+28.82%
+  37640		0.004492 sec	[1.193 mcsec]	0.006220 sec	[1.653 mcsec]	+38.46%
+  72716		0.007396 sec	[1.017 mcsec]	0.012951 sec	[1.781 mcsec]	+75.11%
+ 140479		0.012348 sec	[0.879 mcsec]	0.026624 sec	[1.895 mcsec]	+115.62%
+ 271388		0.020366 sec	[0.750 mcsec]	0.052127 sec	[1.921 mcsec]	+155.95%
+ 524288		0.039443 sec	[0.752 mcsec]	0.104651 sec	[1.996 mcsec]	+165.32%
 ```

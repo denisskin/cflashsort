@@ -27,8 +27,8 @@
 typedef char byte;
 typedef void* pointer;
 
-#define BYTE(pValue, lv) get_byte(*pValue, lv)
-#define SWAP(p1, p2) v=*p1, *p1=*p2, *p2=v
+#define BYTE(pValue, lv) get_byte(*(pValue), lv)
+#define SWAP(p1, p2) { pointer __swap=*(p1); *(p1)=*(p2); *(p2)=__swap; }
 
 void flashsort(void **values, size_t n, const char* get_byte(const void*, unsigned int)) {
 
@@ -46,7 +46,7 @@ void flashsort(void **values, size_t n, const char* get_byte(const void*, unsign
     Bucket buckets[256], *b, *bp, *bLo, *bHi, *bMax = buckets + 256;
     memset(buckets, 0, 256 * sizeof(Bucket));
 
-    pointer v, *p0 = values, *pn, *p;
+    pointer *p0 = values, *pn, *p;
     byte ch, ch0;
     const byte *c, *c0;
     size_t lv;
@@ -56,21 +56,31 @@ start:
     lv = pStack->lv;    // level
     pn = pStack->pn;    // pointer on end of array
 
-    if(pn == p0 + 1) {  // only one element. rise up a level
-        p0 = pn;
-        pStack--;
-        goto sub;
-    }
-    if(pn == p0 + 2) {  // compare 2 element and rise up a level
-        // short sort
-        for(p = p0 + 1; ; lv++) {
-            if(!(c0 = BYTE(p0, lv))) break;
-            if(!(c = BYTE(p, lv))) { SWAP(p, p0); break; }
-            if(*c != *c0) {
-                if(*c < *c0) SWAP(p, p0);
-                break;
+    n = pn - p0;
+    if(n < 8) { // use trivial sort
+        if(n == 2) {  // sort 2 element
+            for(p = p0 + 1; ; lv++) {
+                if(!(c0 = BYTE(p0, lv))) break;
+                if(!(c = BYTE(p, lv))) { SWAP(p, p0); break; }
+                if(*c != *c0) {
+                    if(*c0 > *c) SWAP(p, p0);
+                    break;
+                }
+            }
+        } else if(n > 2) { // use bubble sort
+            for(pointer *pm = p0 + 1; pm < pn; pm++) {
+                for(p = pm; p > p0; p--) {
+                    char fSwap = 0;
+                    for(size_t l = 0; ; l++) {
+                        if(!(c0 = BYTE(p-1, l))) { break; }
+                        if(!(c = BYTE(p, l))) { fSwap = 1; break; }
+                        if(*c0 != *c) { fSwap = *c0 > *c; break; }
+                    }
+                    if(fSwap) { SWAP(p, p-1); } else break;
+                }
             }
         }
+        // break iteration
         p0 = pn;
         pStack--;
         goto sub;
@@ -83,7 +93,7 @@ start:
     // skip NULL values
     while(p0 < pn && !BYTE(p0, lv)) p0++;
 
-    // calc buckets sizes.
+    // 1. calc buckets sizes
     for(p = p0; p < pn; p++) {
         c = BYTE(p, lv);
         if(c) {
@@ -125,7 +135,7 @@ start:
 //        goto start;
 //    }
 
-    // set scopes of buckets (pointers to value)
+    // 2. set scopes of buckets (pointers to value)
 
     // skip NULL values and values with length = 1
     for(b = bLo; b->len < 2 && b <= bHi; b++) {
@@ -147,7 +157,7 @@ start:
         p += b->len;
     }
 
-    // move values into appropriate buckets
+    // 3. move values into appropriate buckets
     for(b = bLo; b < bHi; b++) {
         for(; b->len; b->len--, b->pVal++) {
             while((bp = buckets + *BYTE(b->pVal, lv)) != b) {
@@ -164,15 +174,15 @@ start:
         goto sub;
     }
 
-    // start process sub buckets.  process first sub bucket
+    // 4. start processing of sub buckets.  process first sub bucket
     goto start;
 
 sub:
     // continue processing sub buckets
     if(pStack < stack) {
-        return; // finish sort
+        // finish sorting
+        return;
     }
-    lv = pStack->lv;
     pn = pStack->pn;
 
     if(p0 >= pn) {
@@ -181,6 +191,7 @@ sub:
     }
 
     // calculate length of current sub-bucket
+    lv = pStack->lv;
     ch = *BYTE(p0, lv);
     for(p = p0 + 1; p < pn; p++) {
         if(ch != (ch0 = *BYTE(p, lv))) break;

@@ -82,9 +82,6 @@ void benchmark_sort_str(const char* title, const char* filename) {
 
     printf("\n\n---------- benchmark %s\t%s -------------", title, filename);
     printf("\n total count values: %d", nValues);
-    printf("\n top-10 values: ");
-    for(i=0; i<10; i++) printf(" %s,", values[i]);
-    printf("... \n");
     printf("\n-------------------------------------------------------------------------------------------------------");
     printf("\nCount\t\tFlash-sort\t\t\tQuick-sort");
     printf("\nelements\ttotal time\tone operation\ttotal time\tone operation");
@@ -125,10 +122,6 @@ void benchmark_sort_str(const char* title, const char* filename) {
             }
         }
     }
-    printf("\n\n top-10 sorted data: ");
-    for(i=0; i<10; i++) printf(" %s,", values1[i]);
-    printf("... \n");
-
     printf("\n\n");
 
     free(buf0);
@@ -161,9 +154,6 @@ void benchmark_sort_int(const char* title, const char* filename) {
 
     printf("\n\n---------- benchmark %s %s -------------", title, filename);
     printf("\n total count values: %d", nValues);
-    printf("\n top-10 values: ");
-    for(i=0; i<10; i++) printf(" %d,", values[i]);
-    printf("... \n");
     printf("\n-------------------------------------------------------------------------------------------------------");
     printf("\nCount\t\tFlash-sort\t\t\tQuick-sort");
     printf("\nelements\ttotal time\tone operation\ttotal time\tone operation");
@@ -205,9 +195,6 @@ void benchmark_sort_int(const char* title, const char* filename) {
             }
         }
     }
-    printf("\n\n top-10 sorted data: ");
-    for(i=0; i<10; i++) printf(" %d,", values1[i]);
-    printf("... \n");
 
     printf("\n\n");
 
