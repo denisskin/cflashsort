@@ -72,7 +72,7 @@ void FLASH_SORT_NAME(FLASH_SORT_TYPE *values, size_t n) {
 
 start:
     lv = pStack->lv;    // level
-    pn = pStack->pn;    // pointer on end of array
+    pn = pStack->pn;    // pointer to the end of array
 
     if(lv > lastLv) {
         // break iteration
@@ -127,27 +127,6 @@ start:
         pStack->lv++;
         goto start;
     }
-
-//    if(countBuckets == 2) {
-//        pStack++;
-//        pStack->lv = lv+1;
-//        bLo->pVal = p0;
-//        bHi->pVal = pStack->pn = p0 + bLo->len;
-//        for(b = bLo; b->len; b->len--, b->pVal++) {
-//            while((bp = buckets + FLASH_SORT_GET_BYTE(b->pVal, lv)) != b) {
-//                FLASH_SORT_SWAP(b->pVal, bp->pVal);
-//                bp->len--;
-//                bp->pVal++;
-//            }
-//        }
-//        bHi->len = 0;
-//        if(lv == lastLv) {
-//            p0 = pn;
-//            pStack -= 2;
-//            goto sub;
-//        }
-//        goto start;
-//    }
 
     // 2. set scopes of buckets (pointers to value)
     if(lv == lastLv) { // last level

@@ -6,18 +6,18 @@
 
 #include "../src/flashsort.h"
 
+// define function flashsort_int by macro
+#define FLASH_SORT_NAME  flashsort_int
+#define FLASH_SORT_TYPE  int
+#include "../src/flashsort_macro.h"
+
+// benchmarks settings
 #define MAX_VALUES          1000000
 #define COUNT_STEPS         20   // count of points
 #define COUNT_EXPERIMENTS   40   // count of experiments on one point
 
 void benchmark_sort_str(const char* title, const char* filename);
 void benchmark_sort_int(const char* title, const char* filename);
-
-// define function flashsort_int by macro
-#define FLASH_SORT_NAME  flashsort_int
-#define FLASH_SORT_TYPE  int
-#include "../src/flashsort_macro.h"
-
 
 int main() {
 
