@@ -21,12 +21,13 @@ void benchmark_sort_int(const char* title, const char* filename);
 
 int main() {
 
+    benchmark_sort_int("Sorting of integers",           "data/numbers.txt");
+
     benchmark_sort_str("Sorting of hashes base64",      "data/hashes-base64.txt");
     benchmark_sort_str("Sorting of hashes hex",         "data/hashes-hex.txt");
     benchmark_sort_str("Sorting of numbers as strings", "data/numbers.txt");
     benchmark_sort_str("Sorting of english words",      "data/words-en.txt");
 
-    benchmark_sort_int("Sorting of integers",           "data/numbers.txt");
     benchmark_sort_int("Sorting of sorted integers",    "data/numbers-sorted.txt");
     benchmark_sort_int("Sorting of r-sorted integers",  "data/numbers-rsorted.txt");
 
