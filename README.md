@@ -60,6 +60,20 @@ flashsort_const(names, 10, sizeof(KeyValue), sizeof(names->key));
 
 ```
 
+Define sort-function by C-macro
+
+``` c
+// define function flashsort_int by macro
+#define FLASH_SORT_NAME  flashsort_int
+#define FLASH_SORT_TYPE  int
+#include "../src/flashsort_macro.h"
+
+int nums[10] = { 9, 6, 7, 0, 3, 1, 3, 2, 5, 8 };
+flashsort_int(nums, 10);
+
+```
+ 
+
 Benchmarks
 ----------
 Benchmarks of sorting of strings.
@@ -112,4 +126,27 @@ elements	total time	   one operation	total time	 one operation
  140479		0.012348 sec	[0.879 mcsec]	0.026624 sec	[1.895 mcsec]	+115.62%
  271388		0.020366 sec	[0.750 mcsec]	0.052127 sec	[1.921 mcsec]	+155.95%
  524288		0.039443 sec	[0.752 mcsec]	0.104651 sec	[1.996 mcsec]	+165.32%
+ 
+
+Benchmarks sorting of IP-addresses log
+
+-------------------------------------------------------------------------------------------------------
+Count		Flash-sort			Quick-sort
+elements	total time	one operation	total time	one operation
+-------------------------------------------------------------------------------------------------------
+    107		0.000007 sec	[0.685 mcsec]	0.000009 sec	[0.832 mcsec]	+21.50%
+    208		0.000020 sec	[0.968 mcsec]	0.000016 sec	[0.790 mcsec]	-18.39%
+    407		0.000027 sec	[0.675 mcsec]	0.000041 sec	[1.017 mcsec]	+50.59%
+    793		0.000056 sec	[0.712 mcsec]	0.000111 sec	[1.402 mcsec]	+96.99%
+   1547		0.000093 sec	[0.604 mcsec]	0.000241 sec	[1.558 mcsec]	+158.07%
+   3016		0.000214 sec	[0.709 mcsec]	0.000704 sec	[2.335 mcsec]	+229.21%
+   5881		0.000443 sec	[0.754 mcsec]	0.001472 sec	[2.502 mcsec]	+232.08%
+  11466		0.000768 sec	[0.670 mcsec]	0.002829 sec	[2.467 mcsec]	+268.31%
+  22354		0.001343 sec	[0.601 mcsec]	0.005789 sec	[2.590 mcsec]	+330.90%
+  43584		0.002602 sec	[0.597 mcsec]	0.010738 sec	[2.464 mcsec]	+312.67%
+  84974		0.005628 sec	[0.662 mcsec]	0.022314 sec	[2.626 mcsec]	+296.50%
+ 165670		0.010292 sec	[0.621 mcsec]	0.045589 sec	[2.752 mcsec]	+342.97%
+ 323000		0.018893 sec	[0.585 mcsec]	0.096238 sec	[2.980 mcsec]	+409.39%
+ 629739		0.037370 sec	[0.593 mcsec]	0.196754 sec	[3.124 mcsec]	+426.51%
+ 
 ```
