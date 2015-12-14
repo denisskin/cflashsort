@@ -6,9 +6,9 @@
 
 #include "../src/flashsort.h"
 
-// define function flashsort_int by macro
-#define FLASH_SORT_NAME  flashsort_int
-#define FLASH_SORT_TYPE  int
+// define function flashsort_uint by macro
+#define FLASH_SORT_NAME  flashsort_uint
+#define FLASH_SORT_TYPE  uint32_t
 #include "../src/flashsort_macro.h"
 
 // benchmarks settings
@@ -17,25 +17,26 @@
 #define COUNT_EXPERIMENTS   40   // count of experiments on one point
 
 void benchmark_sort_str(const char* title, const char* filename);
-void benchmark_sort_int(const char* title, const char* filename);
+void benchmark_sort_uint(const char* title, const char* filename);
 
 int main() {
 
-    benchmark_sort_int("Sorting of integers",           "data/numbers.txt");
+    benchmark_sort_uint("Sorting of IP-addresses",      "data/ip-addresses-as-nums.txt");
+    benchmark_sort_uint("Sorting of integers",          "data/numbers.txt");
 
     benchmark_sort_str("Sorting of hashes base64",      "data/hashes-base64.txt");
     benchmark_sort_str("Sorting of hashes hex",         "data/hashes-hex.txt");
     benchmark_sort_str("Sorting of numbers as strings", "data/numbers.txt");
     benchmark_sort_str("Sorting of english words",      "data/words-en.txt");
 
-    benchmark_sort_int("Sorting of sorted integers",    "data/numbers-sorted.txt");
-    benchmark_sort_int("Sorting of r-sorted integers",  "data/numbers-rsorted.txt");
+    benchmark_sort_uint("Sorting of sorted integers",   "data/numbers-sorted.txt");
+    benchmark_sort_uint("Sorting of r-sorted integers", "data/numbers-rsorted.txt");
 
     return 0;
 }
 
 static __inline int cmp_int(const void * a, const void * b) {
-    return *(int*)a > *(int*)b? 1 : -1;
+    return *(uint32_t*)a > *(uint32_t*)b? 1 : -1;
 }
 
 static __inline int cmp_str(const void * a, const void * b) {
@@ -53,7 +54,7 @@ void benchmark_sort_str(const char* title, const char* filename) {
     int i, nValues = 0;
     FILE *fp = fopen(filename, "r");
     if(!fp) {
-        printf("Error: cant not open file %s!\n", filename);
+        printf("Error: can not open file %s!\n", filename);
         exit(1);
     }
     fseek(fp, 0, SEEK_END);
@@ -132,19 +133,19 @@ void benchmark_sort_str(const char* title, const char* filename) {
 }
 
 //------------ sort integers -----------------
-void benchmark_sort_int(const char* title, const char* filename) {
+void benchmark_sort_uint(const char* title, const char* filename) {
 
     //------- read file ---------------
     int i, nValues = 0;
     FILE *fp = fopen(filename, "r");
     if(!fp) {
-        printf("Error: cant not open file %s!\n", filename);
+        printf("Error: can not open file %s!\n", filename);
         exit(1);
     }
 
-    int*values  = (int*)malloc(MAX_VALUES * sizeof(int));
-    int*values1 = (int*)malloc(MAX_VALUES * sizeof(int));
-    int*values2 = (int*)malloc(MAX_VALUES * sizeof(int));
+    uint32_t *values  = (uint32_t*)malloc(MAX_VALUES * sizeof(uint32_t));
+    uint32_t *values1 = (uint32_t*)malloc(MAX_VALUES * sizeof(uint32_t));
+    uint32_t *values2 = (uint32_t*)malloc(MAX_VALUES * sizeof(uint32_t));
     if(!values || !values1 || !values2) {
         printf("ERROR: Can`t allocate memory!\n");
         exit(1);
@@ -173,8 +174,8 @@ void benchmark_sort_int(const char* title, const char* filename) {
 
             // -- flash sort
             t0 = clock();
-            flashsort_int(values1, n);
-            //flashsort_const(values1, n, sizeof(int), sizeof(int));
+            flashsort_uint(values1, n);
+            //flashsort_const(values1, n, sizeof(uint32_t), sizeof(uint32_t));
             t = clock();
             st1 += (double)(t - t0) / CLOCKS_PER_SEC;
 
