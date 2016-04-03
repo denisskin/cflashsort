@@ -1,8 +1,8 @@
 flashsort
 =========
 
+Fast stable in-place sorting with O(n) data moves and using O(1) memory.
 The algorithm is based on the method of bucket sort (bin sort).
-The algorithm has a run time close to linear and uses O(1) memory.
 
 Example
 -------
