@@ -4,6 +4,9 @@ flashsort
 Fast stable in-place sorting with O(n) data moves and using O(1) memory.
 The algorithm is based on the method of bucket sort (bin sort).
 
+[Detail description](https://habrahabr.ru/post/280848/) of the algoritm (russian).
+
+
 Example
 -------
 ``` c
