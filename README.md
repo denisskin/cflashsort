@@ -90,7 +90,6 @@ output
 ``` txt
 
 Benchmarks sorting of strings
- 
 ---------------------------------------------------------------------------------------------
 Count           Flash-sort                   |   Quick-sort                   |
 elements        Total time                   |   Total time                   |
@@ -107,14 +106,14 @@ elements        Total time                   |   Total time                   |
   21618         0.002881 sec     1.333 µs    |   0.004623 sec     2.139 µs    |   +60.46 %
   40342         0.005950 sec     1.475 µs    |   0.009634 sec     2.388 µs    |   +61.91 %
   75281         0.010677 sec     1.418 µs    |   0.020008 sec     2.658 µs    |   +87.38 %
- 140479         0.020686 sec     1.473 µs    |   0.040685 sec     2.896 µs    |   +96.68 %
+ 140479         0.020686 sec     1.473 µs    |   0.040685 sec     2.896 µs    |   +96.68 % 
 ``` 
 ![Sorting of string](https://habrastorage.org/files/455/e1e/8d9/455e1e8d94a54d6e9b7c88e785308fb5.png)
 
 
+
 ``` txt
 Benchmarks sorting of integers
-
 ---------------------------------------------------------------------------------------------
 Count           Flash-sort                   |   Quick-sort                   |
 elements        Total time                   |   Total time                   |
@@ -138,9 +137,9 @@ elements        Total time                   |   Total time                   |
 ![Sorting of integers](https://habrastorage.org/files/e36/7d9/5d3/e367d95d3b8f4dc0b6a140067ff09911.png)
 
 
+
 ``` txt
 Benchmarks sorting of IP-addresses log
-
 ---------------------------------------------------------------------------------------------
 Count           Flash-sort                   |   Quick-sort                   |
 elements        Total time                   |   Total time                   |
@@ -160,7 +159,6 @@ elements        Total time                   |   Total time                   |
  165670         0.008837 sec     0.533 µs    |   0.037358 sec     2.255 µs    |   +322.75%
  323000         0.016046 sec     0.497 µs    |   0.081251 sec     2.516 µs    |   +406.36%
  629739         0.030895 sec     0.491 µs    |   0.164283 sec     2.609 µs    |   +431.75%
-
 ```
 ![Sorting of IP-addresses](https://habrastorage.org/files/a09/cbe/029/a09cbe02946a417da05436daf68c0978.png)
 
