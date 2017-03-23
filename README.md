@@ -109,7 +109,8 @@ elements        Total time                   |   Total time                   |
   75281         0.010677 sec     1.418 µs    |   0.020008 sec     2.658 µs    |   +87.38 %
  140479         0.020686 sec     1.473 µs    |   0.040685 sec     2.896 µs    |   +96.68 %
 
-![Sorting of strings](https://habrastorage.org/files/455/e1e/8d9/455e1e8d94a54d6e9b7c88e785308fb5.png)
+
+![alt](https://habrastorage.org/files/455/e1e/8d9/455e1e8d94a54d6e9b7c88e785308fb5.png "Alt")
 
 
 Benchmarks sorting of integers
