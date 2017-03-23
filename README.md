@@ -108,11 +108,11 @@ elements        Total time                   |   Total time                   |
   40342         0.005950 sec     1.475 µs    |   0.009634 sec     2.388 µs    |   +61.91 %
   75281         0.010677 sec     1.418 µs    |   0.020008 sec     2.658 µs    |   +87.38 %
  140479         0.020686 sec     1.473 µs    |   0.040685 sec     2.896 µs    |   +96.68 %
+``` 
+![Sorting of string](https://habrastorage.org/files/455/e1e/8d9/455e1e8d94a54d6e9b7c88e785308fb5.png)
 
 
-![alt](https://habrastorage.org/files/455/e1e/8d9/455e1e8d94a54d6e9b7c88e785308fb5.png "Alt")
-
-
+``` txt
 Benchmarks sorting of integers
 
 ---------------------------------------------------------------------------------------------
@@ -134,8 +134,11 @@ elements        Total time                   |   Total time                   |
  140479         0.011156 sec     0.794 µs    |   0.022899 sec     1.630 µs    |   +105.26%
  271388         0.018773 sec     0.692 µs    |   0.045749 sec     1.686 µs    |   +143.70%
  524288         0.037429 sec     0.714 µs    |   0.093858 sec     1.790 µs    |   +150.76%
- 
+```
+![Sorting of integers](https://habrastorage.org/files/e36/7d9/5d3/e367d95d3b8f4dc0b6a140067ff09911.png)
 
+
+``` txt
 Benchmarks sorting of IP-addresses log
 
 ---------------------------------------------------------------------------------------------
@@ -157,5 +160,8 @@ elements        Total time                   |   Total time                   |
  165670         0.008837 sec     0.533 µs    |   0.037358 sec     2.255 µs    |   +322.75%
  323000         0.016046 sec     0.497 µs    |   0.081251 sec     2.516 µs    |   +406.36%
  629739         0.030895 sec     0.491 µs    |   0.164283 sec     2.609 µs    |   +431.75%
- 
+
 ```
+![Sorting of IP-addresses](https://habrastorage.org/files/a09/cbe/029/a09cbe02946a417da05436daf68c0978.png)
+
+
