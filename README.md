@@ -87,8 +87,8 @@ cd benchmarks
 gcc ../src/*.c benchmarks.c  -o benchmarks.o && ./benchmarks.o
 ```
 output
-``` txt
 
+``` txt
 Benchmarks sorting of strings
 ---------------------------------------------------------------------------------------------
 Count           Flash-sort                   |   Quick-sort                   |
@@ -108,7 +108,7 @@ elements        Total time                   |   Total time                   |
   75281         0.010677 sec     1.418 µs    |   0.020008 sec     2.658 µs    |   +87.38 %
  140479         0.020686 sec     1.473 µs    |   0.040685 sec     2.896 µs    |   +96.68 % 
 ``` 
-![Sorting of string](https://habrastorage.org/files/455/e1e/8d9/455e1e8d94a54d6e9b7c88e785308fb5.png)
+![Sorting of strings](https://habrastorage.org/files/e36/7d9/5d3/e367d95d3b8f4dc0b6a140067ff09911.png)
 
 
 
@@ -134,8 +134,7 @@ elements        Total time                   |   Total time                   |
  271388         0.018773 sec     0.692 µs    |   0.045749 sec     1.686 µs    |   +143.70%
  524288         0.037429 sec     0.714 µs    |   0.093858 sec     1.790 µs    |   +150.76%
 ```
-![Sorting of integers](https://habrastorage.org/files/e36/7d9/5d3/e367d95d3b8f4dc0b6a140067ff09911.png)
-
+![Sorting of integers](https://habrastorage.org/files/455/e1e/8d9/455e1e8d94a54d6e9b7c88e785308fb5.png)
 
 
 ``` txt
@@ -160,6 +159,4 @@ elements        Total time                   |   Total time                   |
  323000         0.016046 sec     0.497 µs    |   0.081251 sec     2.516 µs    |   +406.36%
  629739         0.030895 sec     0.491 µs    |   0.164283 sec     2.609 µs    |   +431.75%
 ```
-![Sorting of IP-addresses](https://habrastorage.org/files/a09/cbe/029/a09cbe02946a417da05436daf68c0978.png)
-
-
+![Sorting of IP-addresses](https://habrastorage.org/files/3ca/7e9/ce9/3ca7e9ce9a5f4b62a9cf66a96a8676b2.png)
